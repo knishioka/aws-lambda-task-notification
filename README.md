@@ -1,6 +1,11 @@
 # aws lambda task notification
 Notify overdue and upcoming jira tasks to slack via aws lambda.
 
+# Encrpyt by KMS
+```
+aws kms encrypt --key-id <key id> --plaintext <text>
+```
+
 # Environment variables
 - JIRA_ENCRYPTED_ID: Jira user id encrypted by aws kms
 - JIRA_ENCRYPTED_PASSWORD: Jira user password encrypted by aws kms
@@ -13,9 +18,10 @@ Notify overdue and upcoming jira tasks to slack via aws lambda.
 
 ```
 cd package
-pip install -r requirements.txt --target .
+pip install -r ../requirements.txt --target .
 zip -r9 ../function.zip .
-zip -g function.zip function.py
+cd ../
+zip -g function.zip notification_handler.py
 zip -g function.zip notification.py
 ```
 

@@ -9,9 +9,9 @@ from functools import lru_cache
 def main():
     overdue_filter_id = os.environ['JIRA_FILTER_OVERDUE']
     upcoming_filter_id = os.environ['JIRA_FILTER_UPCOMING']
-    overdue_msg = task_summary(overdue_filter_id)
-    upcoming_msg = task_summary(upcoming_filter_id)
-    slack_post(f'期限切れ\n{overdue_msg}\n\n期限間近\n{upcoming_msg}')
+    overdue_msg = task_summary(overdue_filter_id, '期限切れ')
+    upcoming_msg = task_summary(upcoming_filter_id, '期限間近')
+    slack_post(f'{overdue_msg}\n\n{upcoming_msg}')
 
 
 @lru_cache(None)
@@ -68,9 +68,12 @@ def format_task(task):
     return f'{mention} [{task.key}] ({f.duedate}) {f.summary}'
 
 
-def task_summary(filter_id):
+def task_summary(filter_id, title):
     tasks = jira_connection().search_issues(f'filter={filter_id}')
-    return '\n'.join(map(format_task, tasks))
+    if tasks:
+        return f'{title}\n' + '\n'.join(map(format_task, tasks))
+    else:
+        return ''
 
 
 def jira_tasks(filter_id):
