@@ -65,7 +65,8 @@ def slack_post(msg):
 def format_task(task):
     f = task.fields
     mention = mention_to(f.assignee.emailAddress)
-    return f'{mention} [{task.key}] ({f.duedate}) {f.summary}'
+    link = task.permalink()
+    return f'{mention} [<{link}|{task.key}>] ({f.duedate}) {f.summary}'
 
 
 def task_summary(filter_id, title):
