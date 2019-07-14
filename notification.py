@@ -31,26 +31,10 @@ def slack_connection():
     return SlackClient(slack_token)
 
 
-@lru_cache(None)
-def slack_members():
-    users = slack_connection().api_call("users.list")['members']
-    active_users = filter(is_active, users)
-    return {user['profile'].get('email'): user['id']
-            for user in active_users}
-
-
 def is_active(user):
     return (user['is_bot'] is False and
             user['deleted'] is False and
             user['profile'].get('email') is not None)
-
-
-def mention_to(email):
-    '''generate mention id from email.'''
-    if email in slack_members():
-        return f'<@{slack_members()[email]}>'
-    else:
-        return email
 
 
 def slack_post(msg):
@@ -64,7 +48,11 @@ def slack_post(msg):
 
 def format_task(task):
     f = task.fields
-    mention = mention_to(f.assignee.emailAddress)
+    assignee = f.assignee
+    if assignee:
+        mention = assignee.displayName
+    else:
+        mention = 'No Assignee'
     link = task.permalink()
     return f'{mention} [<{link}|{task.key}>] ({f.duedate}) {f.summary}'
 

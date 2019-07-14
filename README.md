@@ -1,6 +1,8 @@
 # aws lambda task notification
 Notify overdue and upcoming jira tasks to slack via aws lambda.
 
+NOTE: Removed converting JIRA user to slack user because JIRA API no longer provide user's email address.
+
 # Encrpyt by KMS
 ```
 aws kms encrypt --key-id <key id> --plaintext <text>
@@ -8,11 +10,14 @@ aws kms encrypt --key-id <key id> --plaintext <text>
 
 # Environment variables
 - JIRA_ENCRYPTED_ID: Jira user id encrypted by aws kms
-- JIRA_ENCRYPTED_PASSWORD: Jira user password encrypted by aws kms
+- JIRA_ENCRYPTED_TOKEN: Jira user token encrypted by aws kms
 - SLACK_ENCRYPTED_TOKEN: slack token encrypted by aws kms
 - JIRA_FILTER_OVERDUE: jira overdue tasks filter id
 - JIRA_FILTER_UPCOMING: jira upcoming tasks filter id
 - SLACK_CHANNEL_ID: slack channel id
+
+# Get Atlassian token
+https://id.atlassian.com/manage/api-tokens
 
 # Create aws lambda zip
 
