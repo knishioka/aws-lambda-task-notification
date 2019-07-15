@@ -20,7 +20,7 @@ def jira_connection():
     encrypted_pass = os.environ['JIRA_ENCRYPTED_PASSWORD']
     jira_id = kms_decrypt(encrypted_id)
     jira_pass = kms_decrypt(encrypted_pass)
-    options = {'server': 'https://3ideajira.atlassian.net'}
+    options = {'server': os.environ['JIRA_SERVER']}
     return JIRA(options, basic_auth=(jira_id, jira_pass))
 
 

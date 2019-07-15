@@ -9,6 +9,7 @@ aws kms encrypt --key-id <key id> --plaintext <text>
 ```
 
 # Environment variables
+- JIRA_SERVER: jira server url
 - JIRA_ENCRYPTED_ID: Jira user id encrypted by aws kms
 - JIRA_ENCRYPTED_TOKEN: Jira user token encrypted by aws kms
 - SLACK_ENCRYPTED_TOKEN: slack token encrypted by aws kms
