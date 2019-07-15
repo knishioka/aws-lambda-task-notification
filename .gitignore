@@ -2,3 +2,4 @@ function.zip
 package/**
 .libs_cffi_backend
 __pycache__
+.env
