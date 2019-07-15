@@ -17,7 +17,7 @@ def main():
 @lru_cache(None)
 def jira_connection():
     encrypted_id = os.environ['JIRA_ENCRYPTED_ID']
-    encrypted_pass = os.environ['JIRA_ENCRYPTED_PASSWORD']
+    encrypted_pass = os.environ['JIRA_ENCRYPTED_TOKEN']
     jira_id = kms_decrypt(encrypted_id)
     jira_pass = kms_decrypt(encrypted_pass)
     options = {'server': os.environ['JIRA_SERVER']}

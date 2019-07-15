@@ -41,7 +41,7 @@ aws lambda update-function-code --function-name python37 --zip-file fileb://func
 # Run locally
 ```
 JIRA_ENCRYPTED_ID=<your encrypted id> \
-JIRA_ENCRYPTED_PASSWORD=<your encrypted password> \
+JIRA_ENCRYPTED_TOKEN=<your encrypted password> \
 SLACK_ENCRYPTED_TOKEN=<your encrypted token> \
 JIRA_FILTER_OVERDUE=<jira filter id> \
 JIRA_FILTER_UPCOMING=<jira filter id> \
