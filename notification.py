@@ -1,8 +1,9 @@
 import os
 import base64
 import boto3
+import json
 from jira import JIRA
-from slackclient import SlackClient
+from slack import WebClient
 from functools import lru_cache
 
 
@@ -28,7 +29,7 @@ def jira_connection():
 def slack_connection():
     encrypted_token = os.environ['SLACK_ENCRYPTED_TOKEN']
     slack_token = kms_decrypt(encrypted_token)
-    return SlackClient(slack_token)
+    return WebClient(slack_token)
 
 
 def is_active(user):
@@ -39,8 +40,7 @@ def is_active(user):
 
 def slack_post(msg):
     task_channel = os.environ['SLACK_CHANNEL_ID']
-    slack_connection().api_call(
-        "chat.postMessage",
+    slack_connection().chat_postMessage(
         channel=task_channel,
         text=msg
     )
@@ -50,11 +50,23 @@ def format_task(task):
     f = task.fields
     assignee = f.assignee
     if assignee:
-        mention = assignee.displayName
+        if assignee.key in jira_slack_mapping():
+            mention = f'<@{jira_slack_mapping()[assignee.key]}>'
+        else:
+            mention = assignee.displayName
     else:
         mention = 'No Assignee'
     link = task.permalink()
     return f'{mention} [<{link}|{task.key}>] ({f.duedate}) {f.summary}'
+
+
+@lru_cache(None)
+def jira_slack_mapping():
+    mapping_key = 'JIRA_SLACK_MAPPING'
+    if mapping_key in os.environ:
+        return json.loads(os.environ[mapping_key])
+    else:
+        return {}
 
 
 def task_summary(filter_id, title):
