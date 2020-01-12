@@ -62,7 +62,7 @@ def format_task(task):
 
 @lru_cache(None)
 def jira_slack_mapping():
-    mapping_key = 'JIRA_SLACK_MAPPING'
+    mapping_key = 'JIRA_SLACK_MAPPING_JSON'
     if mapping_key in os.environ:
         return json.loads(os.environ[mapping_key])
     else:

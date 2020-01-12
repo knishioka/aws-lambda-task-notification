@@ -16,6 +16,7 @@ aws kms encrypt --key-id <key id> --plaintext <text>
 - JIRA_FILTER_OVERDUE: jira overdue tasks filter id
 - JIRA_FILTER_UPCOMING: jira upcoming tasks filter id
 - SLACK_CHANNEL_ID: slack channel id
+- JIRA_SLACK_MAPPING_JSON: mapping jira account key and slack member id
 
 # Get Atlassian token
 https://id.atlassian.com/manage/api-tokens
