@@ -33,9 +33,9 @@ def slack_connection():
 
 
 def is_active(user):
-    return (user['is_bot'] is False and
-            user['deleted'] is False and
-            user['profile'].get('email') is not None)
+    return (user['is_bot'] is False
+            and user['deleted'] is False
+            and user['profile'].get('email') is not None)
 
 
 def slack_post(msg):
