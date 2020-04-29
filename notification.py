@@ -50,10 +50,11 @@ def format_task(task):
     f = task.fields
     assignee = f.assignee
     if assignee:
-        if assignee.key in jira_slack_mapping():
-            mention = f'<@{jira_slack_mapping()[assignee.key]}>'
+        display_name = assignee.displayName
+        if display_name in jira_slack_mapping():
+            mention = f'<@{jira_slack_mapping()[display_name]}>'
         else:
-            mention = assignee.displayName
+            mention = display_name
     else:
         mention = 'No Assignee'
     link = task.permalink()
