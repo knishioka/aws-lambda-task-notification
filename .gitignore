@@ -3,3 +3,4 @@ package/**
 .libs_cffi_backend
 __pycache__
 .env
+.idea
