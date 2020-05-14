@@ -8,11 +8,9 @@ from functools import lru_cache
 
 
 def main():
-    overdue_filter_id = os.environ['JIRA_FILTER_OVERDUE']
-    upcoming_filter_id = os.environ['JIRA_FILTER_UPCOMING']
-    overdue_msg = task_summary(overdue_filter_id, '期限切れ')
-    upcoming_msg = task_summary(upcoming_filter_id, '期限間近')
-    slack_post(f'{overdue_msg}\n\n{upcoming_msg}')
+    jql_list = json.loads(os.environ['JQL_LIST'])
+    messages = [task_summary(jql_dict['jql'], jql_dict['title']) for jql_dict in jql_list]
+    slack_post('\n\n'.join(messages))
 
 
 @lru_cache(None)
@@ -70,8 +68,8 @@ def jira_slack_mapping():
         return {}
 
 
-def task_summary(filter_id, title):
-    tasks = jira_connection().search_issues(f'filter={filter_id}')
+def task_summary(jql, title):
+    tasks = jira_connection().search_issues(jql)
     if tasks:
         return f'{title}\n' + '\n'.join(map(format_task, tasks))
     else:
